@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 600px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+
+    <h3>Worlds ges</h3>
+    <form action="" method="GET">
+      {{form.as_p}}
+      <input type="submit" value="Filter">
+    </form>
+    <br>
+    <div id="map"></div>
+
+    <script>
+        var coordenats = [];
+    </script>
+
+    {% for a in data %}
+        <script>
+          coordenats.push([+"{{a.coordinates_lat}}", +"{{a.coordinates_lan}}", "{{a.name}}, {{a.river}}, {{a.power}}МВт"])
+        </script>
+    {% endfor %}
+
+    <script>
+          function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 2,
+              center: {lat: 50.454108, lng: 30.467425}
+            });
+            setMarkers(map);
+          }
+      </script>
+
+      <script>
+          function setMarkers(map){
+              for (var i = 0; i < coordenats.length; i++) {
+                  var coordenat = coordenats[i];
+                  var marker = new google.maps.Marker({
+                      position: {lat: coordenat[0], lng: coordenat[1]},
+                      map: map,
+                      title: coordenat[2]
+                  })
+              }
+          }
+    </script>
+
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpK2tWzSdLVgv-hgfyJMUv-VZcp9lOBeQ&callback=initMap">
+    </script>
+
+  </body>
+</html>
